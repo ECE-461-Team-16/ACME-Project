@@ -71,6 +71,7 @@ export interface RepositoryUsers {
   };
 }
 
+
 /////// GraphQL API calls for different information ///////
 
 // function to call API for basic repo information
@@ -194,6 +195,7 @@ export async function fetchRepositoryUsers(owner: string, name: string): Promise
   
   return result;
 }
+
 
 /////// print functions ///////
 
