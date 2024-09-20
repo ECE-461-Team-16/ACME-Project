@@ -79,7 +79,7 @@ var _loop_1 = function (i) {
     // Non-API metric calculations
     // const foundLicense : number = getLicense(urls[i], repository); // get the license for the repo
     (function () { return __awaiter(void 0, void 0, void 0, function () {
-        var link_split, owner, repository, githubRepoOut, link_split_npm, start, end, foundLicense, foundLicenseLatency, repoInfo, repoIssues, repoUsers, busFactor, busFactorLatency, correctness, correctnessLatency, rampUp, rampUpLatency, responsiveMaintainer, responsiveMaintainerLatency, netScore, netScoreLatency, error_1;
+        var link_split, owner, repository, githubRepoOut, link_split_npm, start, end, netScoreStart, netScoreEnd, foundLicense, foundLicenseLatency, repoInfo, repoIssues, repoUsers, busFactor, busFactorLatency, correctness, correctnessLatency, rampUp, rampUpLatency, responsiveMaintainer, responsiveMaintainerLatency, netScore, netScoreLatency, error_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -110,6 +110,9 @@ var _loop_1 = function (i) {
                 case 4:
                     start = void 0;
                     end = void 0;
+                    netScoreStart = void 0;
+                    netScoreEnd = void 0;
+                    netScoreStart = performance.now();
                     //get non-api metrics
                     start = performance.now();
                     return [4 /*yield*/, (0, License_1.getLicense)(urls[i], repository)];
@@ -147,15 +150,13 @@ var _loop_1 = function (i) {
                     responsiveMaintainer = (0, CalculateMetrics_1.calculateResponsiveMaintainerScore)(repoIssues);
                     end = performance.now();
                     responsiveMaintainerLatency = ((end - start) / 1000).toFixed(3);
-                    //net score
-                    start = performance.now();
                     netScore = (0, CalculateMetrics_1.default)(busFactor, correctness, responsiveMaintainer, rampUp, foundLicense);
-                    end = performance.now();
-                    netScoreLatency = ((end - start) / 1000).toFixed(3);
-                    console.log('NetScore:     ', netScore);
-                    console.log('NetScore Latency:     ', netScoreLatency);
+                    netScoreEnd = performance.now();
+                    netScoreLatency = ((netScoreEnd - netScoreStart) / 1000).toFixed(3);
                     // print out scores (for testing)
                     console.log('Repository:  ', repository);
+                    console.log('NetScore:     ', netScore);
+                    console.log('NetScore Latency:     ', netScoreLatency);
                     console.log('Bus Factor:  ', busFactor);
                     console.log('Bus Factor Latency:  ', busFactorLatency);
                     console.log('Correctness: ', correctness);

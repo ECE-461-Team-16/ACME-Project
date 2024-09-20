@@ -122,6 +122,11 @@ for( let i = 0; i < urls.length; i++){ //loop through all of the urls
       let start : number;
       let end : number;
 
+      let netScoreStart : number;
+      let netScoreEnd : number;
+
+      netScoreStart = performance.now();
+
       //get non-api metrics
       start = performance.now();
       const foundLicense: number = await getLicense(urls[i], repository);
@@ -159,10 +164,11 @@ for( let i = 0; i < urls.length; i++){ //loop through all of the urls
       const responsiveMaintainerLatency = ((end - start) / 1000).toFixed(3);
 
       //net score
-      start = performance.now();
       const netScore = calculateNetScore(busFactor, correctness, responsiveMaintainer, rampUp, foundLicense);
-      end = performance.now();
-      const netScoreLatency = ((end - start) / 1000).toFixed(3);
+
+      netScoreEnd = performance.now();
+
+      const netScoreLatency = ((netScoreEnd - netScoreStart) / 1000).toFixed(3);
 
 
       // print out scores (for testing)
