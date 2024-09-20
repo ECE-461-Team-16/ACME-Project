@@ -165,12 +165,10 @@ for( let i = 0; i < urls.length; i++){ //loop through all of the urls
       const netScoreLatency = ((end - start) / 1000).toFixed(3);
 
 
-      console.log('NetScore:     ', netScore);
-      console.log('NetScore Latency:     ', netScoreLatency);
-
-
       // print out scores (for testing)
       console.log('Repository:  ', repository);
+      console.log('NetScore:     ', netScore);
+      console.log('NetScore Latency:     ', netScoreLatency);
       console.log('Bus Factor:  ', busFactor);
       console.log('Bus Factor Latency:  ', busFactorLatency);
       console.log('Correctness: ', correctness);
