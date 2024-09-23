@@ -13,8 +13,13 @@ if (logFile == "" || githubToken == "") {
   logger.error("Error: LOG_FILE or GITHUB_TOKEN environment variable is not set.");
   process.exit(1); // Exit unsuccessfully
 }
+else
+{
+  logger.info("LOG_FILE and GITHUB_TOKEN environment variables are set.");
+}
 
-//get the mode from ./run {input}
+logger.info("Getting URLs...");
+//get the input from ./run {input}
 let input_args: string[] = process.argv.slice(2); //gets user arguments pass in from run bash script REF: [2]
 let filepath: string = input_args.length > 0 ? input_args[0] : "test"; //if no mode is passed in, default to test
 
@@ -65,17 +70,17 @@ export async function processPackageData(packageName: string): Promise<string> {
   const githubRepo = await getNpmPackageGithubRepo(packageName);
   
   if (githubRepo) {
-      // console.log(`GitHub Repository for ${packageName}: ${githubRepo}`);
       // Return the GitHub repository URL
       return githubRepo;
   } else {
-      console.log(`No GitHub repository found for ${packageName}`);
+      logger.error(`No GitHub repository found for ${packageName}`);
       // exit(1);
       //**LOGGING - we need better log here
       return "";
   }
 }
 
+logger.info("Processing URLs...");
 for( let i = 0; i < urls.length; i++){ //loop through all of the urls
   
   
@@ -97,27 +102,21 @@ for( let i = 0; i < urls.length; i++){ //loop through all of the urls
 
       if( link_split[2] === "github.com" ){ //if its github we can just use owner repository from url
         owner = link_split[3];
-        // repository = link_split[4];
         repository = link_split[4].replace(".git", "");
       }
       
-      // ** STILL NEEDS TO BE FIXED **
       else if( link_split[2] === "www.npmjs.com" ){
         //whatever our get link for npm will be (hard coding with working test case for now)
         const githubRepoOut = await processPackageData(link_split[4]);
-        urls[i] = githubRepoOut; //fix for licsense
+        urls[i] = githubRepoOut; //fix for license
 
-        // console.log("****NPM URL: " + githubRepoOut);
         let link_split_npm = githubRepoOut.split("/"); //splits each url into different parts
 
         owner = link_split_npm[3];
         repository = link_split_npm[4].replace(".git", "");
-
-        // console.log('OWNER: ' + owner + '\nREPOSITORY: ' + repository);
-
       }
       else{
-        console.log("error");
+        logger.error("URL is not a valid GitHub or NPM URL");
       }
       
       //variables for latency calculations
@@ -174,33 +173,31 @@ for( let i = 0; i < urls.length; i++){ //loop through all of the urls
 
 
       // print out scores (for testing)
-      // console.log('Repository:  ', repository);
-      // console.log('NetScore:     ', netScore);
-      // console.log('NetScore Latency:     ', netScoreLatency);
-      // console.log('Bus Factor:  ', busFactor);
-      // console.log('Bus Factor Latency:  ', busFactorLatency);
-      // console.log('Correctness: ', correctness);
-      // console.log('Correctness Latency: ', correctnessLatency);
-      // console.log('Ramp Up:     ', rampUp);
-      // console.log('Ramp Up Latency:     ', rampUpLatency);
-      // console.log('Responsive Maintainer: ', responsiveMaintainer);
-      // console.log('Responsive Maintainer Latency: ', responsiveMaintainerLatency);
-      // console.log('License Found: ', foundLicense);
-      // console.log('License Latency: ', foundLicenseLatency);
+      // logger.info('Repository:  ', repository);
+      // logger.info('NetScore:     ', netScore);
+      // logger.info('NetScore Latency:     ', netScoreLatency);
+      // logger.info('Bus Factor:  ', busFactor);
+      // logger.info('Bus Factor Latency:  ', busFactorLatency);
+      // logger.info('Correctness: ', correctness);
+      // logger.info('Correctness Latency: ', correctnessLatency);
+      // logger.info('Ramp Up:     ', rampUp);
+      // logger.info('Ramp Up Latency:     ', rampUpLatency);
+      // logger.info('Responsive Maintainer: ', responsiveMaintainer);
+      // logger.info('Responsive Maintainer Latency: ', responsiveMaintainerLatency);
+      // logger.info('License Found: ', foundLicense);
+      // logger.info('License Latency: ', foundLicenseLatency);
 
     
       // Assuming each variable is defined correctly for each URL
       var output_string = `{"URL":"${urls[i]}", "NetScore":${netScore}, "NetScore_Latency": ${netScoreLatency}, "RampUp":${rampUp}, "RampUp_Latency": ${rampUpLatency}, "Correctness":${correctness}, "Correctness_Latency":${correctnessLatency}, "BusFactor":${busFactor}, "BusFactor_Latency": ${busFactorLatency}, "ResponsiveMaintainer":${responsiveMaintainer}, "ResponsiveMaintainer_Latency": ${responsiveMaintainerLatency}, "License":${foundLicense}, "License_Latency": ${foundLicenseLatency}}`;
       
+      logger.info("Generating JSON output for URL: " + urls[i]);
       // Only write the JSON object followed by a newline
       process.stdout.write(output_string + '\n');
 
-    
-      
-
   } 
   catch (error) {
-    console.error('Error:', error); 
+    logger.error('Error:', error); 
   }
   })();
   
