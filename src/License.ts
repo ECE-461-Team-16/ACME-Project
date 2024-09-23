@@ -2,6 +2,7 @@ import * as fs from 'fs';
 import * as git from 'isomorphic-git';
 import http from 'isomorphic-git/http/node';
 import * as path from 'path';
+import logger from './logger';
 
 // List of licenses compatible with LGPLv2.1
 const compatibleLicenses = ["MIT", "BSD-2-Clause", "BSD-3-Clause", "Apache-2.0", "MPL-2.0"];
@@ -14,7 +15,7 @@ export async function getLicense(url: string, repository: string): Promise<numbe
         if (!fs.existsSync('./clonedGitRepos')) {
             fs.mkdirSync('./clonedGitRepos', { recursive: true });
         }
-
+        logger.info(`Cloning repository ${repository}...`);
         // Clone the repository with depth=1 to get only the most recent commit
         await git.clone({
             fs,
@@ -61,7 +62,7 @@ export async function getLicense(url: string, repository: string): Promise<numbe
         }
 
     } catch (err) { // Error case
-        console.error('Error in cloning or searching for license:', err);
+        logger.error('Error in cloning or searching for license:', err);
         return -1;
     }
 }
