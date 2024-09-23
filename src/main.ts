@@ -40,28 +40,11 @@ import calculateNetScore, { calculateBusFactorScore, calculateCorrectness,
 
 import fetchRepositoryInfo, { fetchRepositoryUsers, fetchRepositoryIssues,
                               RepositoryInfo, RepositoryIssues, RepositoryUsers,
-                              printRepositoryUsers, printRepositoryIssues, printRepositoryInfo, 
                               getNpmPackageGithubRepo
                             } from './GitHubAPIcaller';
                           
 
 import { getLicense } from './License';
-
-interface RepositoryMetrics {
-  URL: string;
-  NetScore: number;
-  NetScore_Latency: number;
-  RampUp: number;
-  RampUp_Latency: number;
-  Correctness: number;
-  Correctness_Latency: number;
-  BusFactor: number;
-  BusFactor_Latency: number;
-  ResponsiveMaintainer: number;
-  ResponsiveMaintainer_Latency: number;
-  License: number;
-  License_Latency: number;
-}
 
 // Get the GitHub repository URL for a given NPM package
 export async function processPackageData(packageName: string): Promise<string> {

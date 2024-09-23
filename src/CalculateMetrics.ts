@@ -1,6 +1,5 @@
 import fetchRepositoryInfo, { fetchRepositoryUsers, fetchRepositoryIssues,
     RepositoryInfo, RepositoryIssues, RepositoryUsers,
-    printRepositoryUsers, printRepositoryIssues, printRepositoryInfo, 
   } from './GitHubAPIcaller';
 
 export function calculateBusFactorScore(users: RepositoryUsers): number {
