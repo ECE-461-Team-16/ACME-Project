@@ -7,13 +7,19 @@ import winston from 'winston';
 
 // Mock external dependencies
 jest.mock('fs');
-jest.mock('../src/logger');
+jest.mock('../src/logger', () => ({
+    error: jest.fn(),
+    info: jest.fn(),
+  }));
+  
 jest.mock('../src/License');
 jest.mock('../src/GitHubAPIcaller', () => ({
-  fetchRepositoryInfo: jest.fn(),
-  fetchRepositoryIssues: jest.fn(),
-  fetchRepositoryUsers: jest.fn()
-}));
+    __esModule: true, 
+    default: jest.fn(), 
+    fetchRepositoryIssues: jest.fn(),
+    fetchRepositoryUsers: jest.fn(),
+  }));
+  
 
 
 // Mock Winston's File transport
@@ -76,5 +82,6 @@ describe('Main file tests', () => {
     expect(logger.info).toHaveBeenCalledWith("Getting URLs...");
     expect(fs.readFileSync).toHaveBeenCalledWith('test', 'utf-8');
   });
+  
   
 });

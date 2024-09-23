@@ -60,14 +60,10 @@ export async function processPackageData(packageName: string): Promise<string> {
       return "";
   }
 }
-
 logger.info("Processing URLs...");
 for( let i = 0; i < urls.length; i++){ //loop through all of the urls
-
   (async () => {
-    try {
-
-      //Get data from url
+    try {//Get data from url
       let link_split = urls[i].split("/"); //splits each url into different parts
 
       let owner : string;
@@ -111,7 +107,6 @@ for( let i = 0; i < urls.length; i++){ //loop through all of the urls
       const foundLicenseLatency = ((end - start) / 1000).toFixed(3);
 
       // get inferfaces to get all metrics for repository information
-      const repoInfo:   RepositoryInfo   = await fetchRepositoryInfo(owner, repository);
       const repoIssues: RepositoryIssues = await fetchRepositoryIssues(owner, repository);
       const repoUsers:  RepositoryUsers  = await fetchRepositoryUsers(owner, repository);
 
