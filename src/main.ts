@@ -32,8 +32,6 @@ const urls = url_file
   .map(url => url.trim())
   .filter(url => url.length > 0); // Filter out blank lines
 
-
-
 // import fetch/print functions and interfaces
 import calculateNetScore, { calculateBusFactorScore, calculateCorrectness,
                             calculateRampUpScore, calculateResponsiveMaintainerScore
@@ -82,11 +80,6 @@ export async function processPackageData(packageName: string): Promise<string> {
 
 logger.info("Processing URLs...");
 for( let i = 0; i < urls.length; i++){ //loop through all of the urls
-  
-  
-  // Non-API metric calculations
-  // const foundLicense : number = getLicense(urls[i], repository); // get the license for the repo
-
 
   (async () => {
     try {
@@ -171,23 +164,6 @@ for( let i = 0; i < urls.length; i++){ //loop through all of the urls
 
       const netScoreLatency = ((netScoreEnd - netScoreStart) / 1000).toFixed(3);
 
-
-      // print out scores (for testing)
-      // logger.info('Repository:  ', repository);
-      // logger.info('NetScore:     ', netScore);
-      // logger.info('NetScore Latency:     ', netScoreLatency);
-      // logger.info('Bus Factor:  ', busFactor);
-      // logger.info('Bus Factor Latency:  ', busFactorLatency);
-      // logger.info('Correctness: ', correctness);
-      // logger.info('Correctness Latency: ', correctnessLatency);
-      // logger.info('Ramp Up:     ', rampUp);
-      // logger.info('Ramp Up Latency:     ', rampUpLatency);
-      // logger.info('Responsive Maintainer: ', responsiveMaintainer);
-      // logger.info('Responsive Maintainer Latency: ', responsiveMaintainerLatency);
-      // logger.info('License Found: ', foundLicense);
-      // logger.info('License Latency: ', foundLicenseLatency);
-
-    
       // Assuming each variable is defined correctly for each URL
       var output_string = `{"URL":"${urls[i]}", "NetScore":${netScore}, "NetScore_Latency": ${netScoreLatency}, "RampUp":${rampUp}, "RampUp_Latency": ${rampUpLatency}, "Correctness":${correctness}, "Correctness_Latency":${correctnessLatency}, "BusFactor":${busFactor}, "BusFactor_Latency": ${busFactorLatency}, "ResponsiveMaintainer":${responsiveMaintainer}, "ResponsiveMaintainer_Latency": ${responsiveMaintainerLatency}, "License":${foundLicense}, "License_Latency": ${foundLicenseLatency}}`;
       
