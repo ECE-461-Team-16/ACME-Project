@@ -1,3 +1,7 @@
+// __tests__/License.test.ts
+
+process.env.LOG_FILE = 'test.log'; // Set the environment variable before any imports
+
 import * as fs from 'fs';
 import * as git from 'isomorphic-git';
 import { getLicense } from '../src/License'; // Adjusted import path for src folder
