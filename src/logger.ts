@@ -1,14 +1,22 @@
 import * as winston from 'winston';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 // Get log level from environment variable (default to 'info')
-const logLevel = process.env.LOG_LEVEL || 'info';
+const logLevel = process.env.LOG_LEVEL || '1';
 
-// Get log file path from environment variable (default to './app.log')
-const logFile = process.env.LOG_FILE || './app.log';
+// Get log file path from environment variable
+const logFile = process.env.LOG_FILE;
+
+const levels = {
+  0: 'silent',
+  1: 'info',
+  2: 'debug',
+};
 
 // Create a Winston logger instance
 const logger = winston.createLogger({
-  level: logLevel,
+  level: levels[logLevel as unknown as keyof typeof levels],
   format: winston.format.combine(
     winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
     winston.format.printf(({ timestamp, level, message }) => {
@@ -17,7 +25,6 @@ const logger = winston.createLogger({
   ),
   transports: [
     new winston.transports.File({ filename: logFile }),
-    new winston.transports.Console() // Delete if we don't want console output
   ]
 });
 
